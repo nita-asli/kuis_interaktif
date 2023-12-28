@@ -1,0 +1,64 @@
+/* File: static/styles.css */
+
+/* Gaya Dasar */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #008080; /* Hijau Tosca */
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* Navigasi */
+nav {
+    background-color: #00a8a8; /* Hijau Tosca yang lebih terang */
+    padding: 1rem;
+}
+
+/* Gaya tambahan untuk mengatur footer agar tetap di bawah */
+main {
+    margin-bottom: 60px; /* Sesuaikan dengan tinggi footer */
+}
+
+/* Gaya Tambahan untuk Meningkatkan Tampilan Dashboard */
+.dashboard {
+    background-color: #e0f2f1; /* Warna dasar untuk area dashboard */
+    padding: 20px;
+}
+
+/* Card Styles */
+.card {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* Button Hover Effect */
+.button:hover {
+    background-color: #007a7a; /* Hijau Tosca yang lebih gelap */
+    transform: scale(1.05);
+}
+
+/* Success and Error Alerts */
+.success,
+.error {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.success:hover,
+.error:hover {
+    opacity: 0.8;
+}

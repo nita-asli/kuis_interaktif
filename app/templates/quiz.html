@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Quiz{% endblock %}
+
+{% block content %}
+<h2>Quiz</h2>
+<!-- Your interactive quiz form here -->
+<!-- quiz.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+</head>
+<body>
+    <h1>Interactive Quiz</h1>
+    <form method="POST" action="{{ url_for('submit_quiz') }}">
+        <!-- Tambahkan logika untuk menampilkan pertanyaan dan opsi jawaban -->
+        <!-- quiz.html -->
+<!-- Contoh pertanyaan pilihan ganda -->
+<label for="question1">Question 1: What is the capital of France?</label>
+<input type="checkbox" name="question1" value="paris"> Paris
+<input type="checkbox" name="question1" value="london"> London
+<input type="checkbox" name="question1" value="berlin"> Berlin
+<input type="checkbox" name="question1" value="rome"> Rome
+
+        <button type="submit">Submit Quiz</button>
+    </form>
+</body>
+</html>
+
+{% endblock %}
