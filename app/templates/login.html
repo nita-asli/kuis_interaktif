@@ -3,10 +3,15 @@
 {% block content %}
     <h1>Login</h1>
     <form method="POST" action="{{ url_for('login') }}">
-        <label for="username">Username:</label>
-        <input type="text" name="username" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required>
+        {{ form.hidden_tag() }}
+        <div>
+            <label for="{{ form.username.id }}">{{ form.username.label }}</label>
+            {{ form.username() }}
+        </div>
+        <div>
+            <label for="{{ form.password.id }}">{{ form.password.label }}</label>
+            {{ form.password() }}
+        </div>
         <button type="submit">Login</button>
     </form>
 {% endblock %}

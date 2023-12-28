@@ -15,21 +15,35 @@ header {
     padding: 1rem;
 }
 
+/* Footer Styles */
+footer {
+    background-color: #008080; /* Hijau Tosca */
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
 /* Navigasi */
 nav {
     background-color: #00a8a8; /* Hijau Tosca yang lebih terang */
     padding: 1rem;
+    flex: 0 0 200px;
 }
 
 /* Gaya tambahan untuk mengatur footer agar tetap di bawah */
 main {
-    margin-bottom: 60px; /* Sesuaikan dengan tinggi footer */
+    margin-bottom: 60px;
+    flex: 1; 
 }
 
 /* Gaya Tambahan untuk Meningkatkan Tampilan Dashboard */
 .dashboard {
     background-color: #e0f2f1; /* Warna dasar untuk area dashboard */
     padding: 20px;
+    text-align: center; 
 }
 
 /* Card Styles */

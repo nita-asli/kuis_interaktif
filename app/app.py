@@ -1,14 +1,16 @@
-# app.py
 from flask import Flask, render_template, request, redirect, url_for, flash
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_migrate import Migrate
+from flask_wtf import FlaskForm  # Tambahkan ini untuk mengimpor FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your_secret_key'  # Gantilah dengan secret key yang aman
+app.config['SECRET_KEY'] = 'your_secret_key'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -16,17 +18,15 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-# Definisikan kelas User jika belum ada
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
-class QuizScore(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    score = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Login')
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -34,10 +34,23 @@ def load_user(user_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # Logika login
-    return render_template('login.html')
+    form = LoginForm()
 
-# Rute untuk logout
+    if request.method == 'POST' and form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+
+        user = User.query.filter_by(username=username).first()
+
+        if user and user.password == password:
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Login failed. Please check your username and password.', 'error')
+
+    return render_template('login.html', form=form)
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -45,7 +58,6 @@ def logout():
     flash('Logout successful. Goodbye!', 'success')
     return redirect(url_for('home'))
 
-# Rute untuk registrasi
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -64,21 +76,19 @@ def register():
 
     return render_template('register.html')
 
-# Rute untuk papan peringkat
 @app.route('/leaderboard')
 def leaderboard():
-    # Tambahkan logika untuk mengambil dan menampilkan skor dari database
     scores = QuizScore.query.all()
     return render_template('leaderboard.html', scores=scores)
 
-# Rute untuk kuis
 @app.route('/quiz', methods=['GET', 'POST'])
 @login_required
 def quiz():
     if request.method == 'POST':
-        # Tambahkan logika untuk mengevaluasi jawaban dan menghitung skor
+        # Tambahkan logika evaluasi jawaban dan hitung skor di sini
         # Simpan skor ke database
-        score_entry = QuizScore(user_id=current_user.id, score=10)  # Gantilah dengan nilai yang sesuai
+        # Gantilah nilai 10 dengan skor yang dihitung
+        score_entry = QuizScore(user_id=current_user.id, score=10)
         db.session.add(score_entry)
         db.session.commit()
         flash('Quiz submitted successfully. Your score is X.', 'success')
@@ -86,7 +96,6 @@ def quiz():
 
     return render_template('quiz.html')
 
-# Rute untuk halaman utama
 @app.route('/')
 def home():
     return render_template('home.html')
